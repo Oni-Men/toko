@@ -1,7 +1,6 @@
 package dev.onimen.toko.command;
 
 import dev.onimen.toko.Context;
-import dev.onimen.toko.cli.InteractiveShell;
 
 import java.io.IOException;
 import java.io.PrintWriter;
