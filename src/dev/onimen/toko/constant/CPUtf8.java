@@ -2,6 +2,7 @@ package dev.onimen.toko.constant;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class CPUtf8 extends CPEntry {
 
@@ -23,4 +24,9 @@ public class CPUtf8 extends CPEntry {
         }
     }
 
+    @Override
+    public void write(DataOutputStream dataOutputStream) throws IOException {
+        super.write(dataOutputStream);
+        dataOutputStream.write(this.toByteArray());
+    }
 }

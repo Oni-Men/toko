@@ -1,5 +1,8 @@
 package dev.onimen.toko.constant;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class CPDynamic extends CPEntry {
 
     public int bootstrapMethodAttrIndex;
@@ -11,4 +14,10 @@ public class CPDynamic extends CPEntry {
         this.nameAndTypeIndex = nameAndTypeIndex;
     }
 
+    @Override
+    public void write(DataOutputStream dataOutputStream) throws IOException {
+        super.write(dataOutputStream);
+        dataOutputStream.writeShort(bootstrapMethodAttrIndex);
+        dataOutputStream.writeShort(nameAndTypeIndex);
+    }
 }

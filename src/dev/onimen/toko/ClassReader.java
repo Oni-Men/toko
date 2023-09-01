@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ClassReader {
+public class ClassReader implements AutoCloseable {
     private final Path classFilePath;
     private final DataInputStream dataInputStream;
 
@@ -246,4 +246,8 @@ public class ClassReader {
         return attribute;
     }
 
+    @Override
+    public void close() throws Exception {
+        this.dataInputStream.close();
+    }
 }

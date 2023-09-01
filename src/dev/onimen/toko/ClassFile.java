@@ -4,6 +4,7 @@ import dev.onimen.toko.constant.CPClass;
 import dev.onimen.toko.constant.CPEntry;
 import dev.onimen.toko.constant.CPUtf8;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,38 +12,20 @@ public class ClassFile {
 
     public static class AccessFlags {
 
-        private static final int PUBLIC = 0x0001;
-        private static final int FINAL = 0x0010;
-        private static final int SUPER = 0x0020;
-        private static final int INTERFACE = 0x0200;
-        private static final int ABSTRACT = 0x0400;
-        private static final int SYNTHETIC = 0x1000;
-        private static final int ANNOTATION = 0x2000;
-        private static final int ENUM = 0x4000;
-        private static final int MODULE = 0x8000;
-
-        public boolean isPublic;
-        public boolean isFinal;
-        public boolean isSuper;
-        public boolean isInterface;
-        public boolean isAbstract;
-        public boolean isSynthetic;
-        public boolean isAnnotation;
-        public boolean isEnum;
-        public boolean isModule;
+        public static final int PUBLIC = 0x0001;
+        public static final int FINAL = 0x0010;
+        public static final int SUPER = 0x0020;
+        public static final int INTERFACE = 0x0200;
+        public static final int ABSTRACT = 0x0400;
+        public static final int SYNTHETIC = 0x1000;
+        public static final int ANNOTATION = 0x2000;
+        public static final int ENUM = 0x4000;
+        public static final int MODULE = 0x8000;
 
         private int accessFlags;
 
         public AccessFlags(int accessFlags) {
-            isPublic = has(PUBLIC);
-            isFinal = has(FINAL);
-            isSuper = has(SUPER);
-            isInterface = has(INTERFACE);
-            isAbstract = has(ABSTRACT);
-            isSynthetic = has(SYNTHETIC);
-            isAnnotation = has(ANNOTATION);
-            isEnum = has(ENUM);
-            isModule = has(MODULE);
+            this.accessFlags = accessFlags;
         }
 
         public boolean has(int mask) {
@@ -86,12 +69,23 @@ public class ClassFile {
 
     private boolean isDirty = true;
 
+    private Path classFilePath;
+
     public ClassFile() {
+        this(null);
+    }
+
+    public ClassFile(Path classFilePath) {
+        this.classFilePath = classFilePath;
         constantPool = new ArrayList<>();
         interfaces = new ArrayList<>();
         fields = new ArrayList<>();
         methods = new ArrayList<>();
         attributes = new ArrayList<>();
+    }
+
+    public Path getClassFilePath() {
+        return classFilePath;
     }
 
     private String getNameOfClass(int classIndex) {
@@ -120,6 +114,10 @@ public class ClassFile {
     public int getConstantPoolLength() {
         // The "length" wrote in Class file is 1 greater than the actual size of constant pool.
         return constantPool.size() + 1;
+    }
+
+    public CPEntry getConstantPoolEntry(int index) {
+        return constantPool.get(index - 1);
     }
 
     public boolean isDirty() {

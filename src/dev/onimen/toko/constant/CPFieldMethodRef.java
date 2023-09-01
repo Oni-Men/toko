@@ -1,5 +1,8 @@
 package dev.onimen.toko.constant;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class CPFieldMethodRef extends CPEntry {
     public int classIndex;
     public int nameAndTypeIndex;
@@ -8,5 +11,12 @@ public class CPFieldMethodRef extends CPEntry {
         super(type);
         this.classIndex = classIndex;
         this.nameAndTypeIndex = nameAndTypeIndex;
+    }
+
+    @Override
+    public void write(DataOutputStream dataOutputStream) throws IOException {
+        super.write(dataOutputStream);
+        dataOutputStream.writeShort(classIndex);
+        dataOutputStream.writeShort(nameAndTypeIndex);
     }
 }
