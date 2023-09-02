@@ -2,10 +2,17 @@ package dev.onimen.toko.command;
 
 import dev.onimen.toko.ClassFile;
 import dev.onimen.toko.Context;
+import dev.onimen.toko.FieldAccessFlag;
+import dev.onimen.toko.FieldData;
+import dev.onimen.toko.constant.CPClass;
+import dev.onimen.toko.constant.CPUtf8;
 import dev.onimen.toko.util.StringUtils;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowCommand implements Command {
 
@@ -121,11 +128,38 @@ public class ShowCommand implements Command {
     }
 
     private void printInterfaces(ClassFile classFile, PrintWriter writer) {
-
+        writer.println("<< Interfaces >>");
+        var interfacesText = classFile.interfaces.stream().map(i ->  {
+            var entry = classFile.getConstantPoolEntry(i.classInfoIndex);
+            if (entry instanceof CPClass classInfo) {
+                entry = classFile.getConstantPoolEntry(classInfo.nameIndex);
+                if (entry instanceof CPUtf8 utf8) {
+                    return utf8.value;
+                }
+                throw new RuntimeException(String.format("#%d is not CONSTANT_Utf8", classInfo.nameIndex));
+            }
+            throw new RuntimeException(String.format("#%d is not CONSTANT_Class_info", i.classInfoIndex));
+        }).collect(Collectors.joining(", "));
+        writer.println(String.format("\t%s%n", interfacesText));
     }
 
     private void printFields(ClassFile classFile, PrintWriter writer) {
+        writer.println("<< Fields >>");
 
+        for (var field : classFile.fields) {
+            var accessFlags = field.accessFlags;
+            var nameEntry  = (CPUtf8) classFile.getConstantPoolEntry(field.nameIndex);
+            var descriptorEntry = (CPUtf8) classFile.getConstantPoolEntry(field.descriptorIndex);
+            var modifier = this.getFieldModifierText(accessFlags);
+
+            writer.printf("\t%s %s%n", modifier, nameEntry.value);
+            writer.printf("\t\tdescriptor: %s%n", descriptorEntry.value);
+            writer.printf("\t\tflags: %s%n", accessFlags);
+
+            if (accessFlags.has(FieldAccessFlag.ACC_STATIC.mask | FieldAccessFlag.ACC_FINAL.mask)) {
+                // TODO print constant value
+            }
+        }
     }
 
     private void printMethods(ClassFile classFile, PrintWriter writer) {
@@ -134,5 +168,13 @@ public class ShowCommand implements Command {
 
     private void printAttributes(ClassFile classFile, PrintWriter writer) {
 
+    }
+
+    private String getFieldModifierText(FieldData.AccessFlags accessFlags) {
+        return Arrays.asList(FieldAccessFlag.values())
+                .stream()
+                .filter(flag -> accessFlags.has(flag.mask))
+                .map(flag -> flag.keyword)
+                .collect(Collectors.joining(" "));
     }
 }

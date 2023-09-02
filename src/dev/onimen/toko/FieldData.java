@@ -1,22 +1,14 @@
 package dev.onimen.toko;
 
+import dev.onimen.toko.util.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FieldData {
 
     public static class AccessFlags {
-
-        public static final int PUBLIC = 0x0001;
-        public static final int PRIVATE = 0x0002;
-        public static final int PROTECTED = 0x0004;
-        public static final int STATIC = 0x0008;
-        public static final int FINAL = 0x0010;
-        public static final int VOLATILE = 0x0040;
-        public static final int TRANSIENT = 0x0080;
-        public static final int SYNTHETIC = 0x1000;
-        public static final int ENUM = 0x4000;
-
         private int accessFlags;
 
         public AccessFlags(int accessFlags) {
@@ -39,6 +31,14 @@ public class FieldData {
             return accessFlags;
         }
 
+        public String toString() {
+            var hex = StringUtils.toHexString(accessFlags, 4);
+            var flagNames = Arrays.stream(FieldAccessFlag.values())
+                    .filter(flagType -> has(flagType.mask))
+                    .map(flagType -> flagType.name())
+                    .toList();
+            return String.format("%s: (%s)", hex, String.join(", ", flagNames));
+        }
     }
 
     public AccessFlags accessFlags;

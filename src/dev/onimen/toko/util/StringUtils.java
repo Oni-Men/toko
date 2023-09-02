@@ -75,4 +75,11 @@ public class StringUtils {
         var padding = Math.max(0, minLength - string.length());
         return pad.repeat(padding) + string;
     }
+
+    public static String removePrefix(String prefix, String string) {
+        if (string.startsWith(prefix)) {
+            return string.substring(prefix.length());
+        }
+        return string;
+    }
 }
