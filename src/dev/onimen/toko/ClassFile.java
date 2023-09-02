@@ -3,24 +3,34 @@ package dev.onimen.toko;
 import dev.onimen.toko.constant.CPClass;
 import dev.onimen.toko.constant.CPEntry;
 import dev.onimen.toko.constant.CPUtf8;
+import dev.onimen.toko.util.StringUtils;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClassFile {
 
-    public static class AccessFlags {
+    public enum AccessFlagType {
+        ACC_PUBLIC(0x0001),
+        ACC_FINAL(0x0010),
+        SUPER(0x0020),
+        INTERFACE(0x0200),
+        ABSTRACT(0x0400),
+        SYNTHETIC(0x1000),
+        ANNOTATION(0x2000),
+        ENUM(0x4000),
+        MODULE(0x8000);
 
-        public static final int PUBLIC = 0x0001;
-        public static final int FINAL = 0x0010;
-        public static final int SUPER = 0x0020;
-        public static final int INTERFACE = 0x0200;
-        public static final int ABSTRACT = 0x0400;
-        public static final int SYNTHETIC = 0x1000;
-        public static final int ANNOTATION = 0x2000;
-        public static final int ENUM = 0x4000;
-        public static final int MODULE = 0x8000;
+        public final int mask;
+
+        AccessFlagType(int mask) {
+            this.mask = mask;
+        }
+    }
+
+    public static class AccessFlags {
 
         private int accessFlags;
 
@@ -42,6 +52,16 @@ public class ClassFile {
 
         public int get() {
             return accessFlags;
+        }
+
+        public String toString() {
+            var sb = new StringBuffer();
+            var hex = StringUtils.toHexString(accessFlags, 4);
+            var flagNames = Arrays.stream(AccessFlagType.values())
+                    .filter(flagType -> has(flagType.mask))
+                    .map(flagType -> flagType.name())
+                    .toList();
+            return String.format("%s: (%s)", hex, String.join(", ", flagNames));
         }
     }
 
@@ -89,10 +109,10 @@ public class ClassFile {
     }
 
     private String getNameOfClass(int classIndex) {
-        var entry = constantPool.get(classIndex);
+        var entry = getConstantPoolEntry(classIndex);
 
         if (entry instanceof CPClass classEntry) {
-            var nameEntry = constantPool.get(classEntry.nameIndex);
+            var nameEntry = getConstantPoolEntry(classEntry.nameIndex);
             if (nameEntry instanceof CPUtf8 utf8Entry) {
                 return utf8Entry.value;
             }

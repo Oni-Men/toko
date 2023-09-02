@@ -61,4 +61,14 @@ public class StringUtils {
         };
     }
 
+    public static String toHexString(int value, int length) {
+        return toHexString(value, length, "0x");
+    }
+
+    public static String toHexString(int value, int length, String prefix) {
+        var hex = Integer.toHexString(value).toUpperCase();
+        var padding = Math.max(0, length - hex.length());
+        return prefix + "0".repeat(padding) + hex;
+    }
+
 }

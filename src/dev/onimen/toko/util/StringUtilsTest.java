@@ -30,4 +30,18 @@ class StringUtilsTest {
             assertEquals(test.expected, StringUtils.toSnakeCase(test.original, test.type));
         }
     }
+
+    @Test
+    void toHexString() {
+        record HexStringTest(int original, int length, String expected) {}
+        var tests = new HexStringTest[] {
+                new HexStringTest(0xCAFE, 2, "0xCAFE"),
+                new HexStringTest(0x00DA, 4, "0x00DA"),
+                new HexStringTest(0xBABE, 4, "0xBABE")
+        };
+
+        for (var test : tests) {
+            assertEquals(test.expected, StringUtils.toHexString(test.original, test.length));
+        }
+    }
 }
