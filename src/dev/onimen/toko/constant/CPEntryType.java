@@ -1,7 +1,5 @@
 package dev.onimen.toko.constant;
 
-import dev.onimen.toko.util.StringUtils;
-
 public enum CPEntryType {
 
     CLASS(7, "Class"),
