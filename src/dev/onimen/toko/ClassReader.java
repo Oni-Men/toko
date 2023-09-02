@@ -221,6 +221,8 @@ public class ClassReader implements AutoCloseable {
             var attribute = this.readAttribute();
             methodData.attributes.add(attribute);
         }
+
+        classFile.methods.add(methodData);
     }
 
     void readAttributes(ClassFile classFile) throws IOException {
