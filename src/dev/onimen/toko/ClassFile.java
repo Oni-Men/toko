@@ -87,7 +87,7 @@ public class ClassFile {
 
     public List<AttributeData> attributes;
 
-    private boolean isDirty = true;
+    private boolean isDirty;
 
     private Path classFilePath;
 

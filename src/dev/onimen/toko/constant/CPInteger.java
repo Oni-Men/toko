@@ -16,4 +16,9 @@ public class CPInteger extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.writeInt(value);
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
 }

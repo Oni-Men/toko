@@ -17,4 +17,9 @@ public class CPMethodType extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.writeShort(descriptorIndex);
     }
+
+    @Override
+    public String toString() {
+        return String.format("#%d", descriptorIndex);
+    }
 }

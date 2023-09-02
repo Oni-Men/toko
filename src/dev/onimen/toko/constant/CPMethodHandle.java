@@ -20,4 +20,9 @@ public class CPMethodHandle extends CPEntry {
         dataOutputStream.writeByte(referenceKind);
         dataOutputStream.writeShort(referenceIndex);
     }
+
+    @Override
+    public String toString() {
+        return String.format("#%d.#%d", referenceKind, referenceIndex);
+    }
 }

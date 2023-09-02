@@ -46,6 +46,7 @@ public class InteractiveShell {
         this.registerCommand(new ExitCommand());
         this.registerCommand(new HelpCommand());
         this.registerCommand(new LicenseCommand());
+        this.registerCommand(new ShowCommand());
     }
 
     public Collection<Command> getCommands() {

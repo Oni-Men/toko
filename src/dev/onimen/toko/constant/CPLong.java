@@ -16,4 +16,9 @@ public class CPLong extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.writeLong(value);
     }
+
+    @Override
+    public String toString() {
+        return Long.toString(value);
+    }
 }

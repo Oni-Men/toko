@@ -19,4 +19,9 @@ public class CPFieldMethodRef extends CPEntry {
         dataOutputStream.writeShort(classIndex);
         dataOutputStream.writeShort(nameAndTypeIndex);
     }
+
+    @Override
+    public String toString() {
+        return String.format("#%d.#%d", classIndex, nameAndTypeIndex);
+    }
 }

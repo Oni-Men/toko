@@ -4,34 +4,38 @@ import dev.onimen.toko.util.StringUtils;
 
 public enum CPEntryType {
 
-    CLASS(7),
-    FIELD_REF(9),
-    METHOD_REF(10),
-    INTERFACE_METHOD_REF(11),
-    STRING(8),
-    INTEGER(3),
-    FLOAT(4),
-    LONG(5),
-    DOUBLE(6),
-    NAME_AND_TYPE(12),
-    UTF8(1),
-    METHOD_HANDLE(15),
-    METHOD_TYPE(16),
-    DYNAMIC(17),
-    INVOKE_DYNAMIC(18),
-    MODULE(19),
-    PACKAGE(20);
+    CLASS(7, "Class"),
+    FIELD_REF(9, "Fieldref"),
+    METHOD_REF(10, "Methodref"),
+    INTERFACE_METHOD_REF(11, "InterfaceMethodref"),
+    STRING(8, "String"),
+    INTEGER(3, "Integer"),
+    FLOAT(4, "Float"),
+    LONG(5, "Long"),
+    DOUBLE(6, "Double"),
+    NAME_AND_TYPE(12, "NameAndType"),
+    UTF8(1, "Utf8"),
+    METHOD_HANDLE(15, "MethodHandle"),
+    METHOD_TYPE(16, "MethodType"),
+    DYNAMIC(17, "Dynamic"),
+    INVOKE_DYNAMIC(18, "InvokeDynamic"),
+    MODULE(19, "Module"),
+    PACKAGE(20, "Package");
 
     private final int tag;
-    private final String name;
+    public final String name;
 
-    CPEntryType(int tag) {
+    CPEntryType(int tag, String name) {
         this.tag = tag;
-        this.name = StringUtils.toSnakeCase(this.name(), StringUtils.CapitalizeType.UPPER_FIRST);
+        this.name = name;
     }
 
     public int getTag() {
         return this.tag;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public static CPEntryType getTypeByTag(int tag) {

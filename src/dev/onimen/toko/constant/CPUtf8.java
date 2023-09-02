@@ -29,4 +29,9 @@ public class CPUtf8 extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.write(this.toByteArray());
     }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

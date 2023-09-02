@@ -71,4 +71,8 @@ public class StringUtils {
         return prefix + "0".repeat(padding) + hex;
     }
 
+    public static String padding(String string, String pad, int minLength) {
+        var padding = Math.max(0, minLength - string.length());
+        return pad.repeat(padding) + string;
+    }
 }

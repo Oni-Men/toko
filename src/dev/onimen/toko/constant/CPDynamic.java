@@ -20,4 +20,9 @@ public class CPDynamic extends CPEntry {
         dataOutputStream.writeShort(bootstrapMethodAttrIndex);
         dataOutputStream.writeShort(nameAndTypeIndex);
     }
+
+    @Override
+    public String toString() {
+        return String.format("#%d.#%d", bootstrapMethodAttrIndex, nameAndTypeIndex);
+    }
 }

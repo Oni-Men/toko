@@ -20,4 +20,9 @@ public class CPNameAndType extends CPEntry {
         dataOutputStream.writeShort(nameIndex);
         dataOutputStream.writeShort(descriptorIndex);
     }
+
+    @Override
+    public String toString() {
+        return String.format("#%d.#%d", nameIndex, descriptorIndex);
+    }
 }

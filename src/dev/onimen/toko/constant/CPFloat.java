@@ -16,4 +16,9 @@ public class CPFloat extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.writeFloat(value);
     }
+
+    @Override
+    public String toString() {
+        return Float.toString(value);
+    }
 }

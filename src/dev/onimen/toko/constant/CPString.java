@@ -16,4 +16,9 @@ public class CPString extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.writeShort(stringIndex);
     }
+
+    @Override
+    public String toString() {
+        return String.format("#%d", stringIndex);
+    }
 }

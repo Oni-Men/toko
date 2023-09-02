@@ -16,4 +16,9 @@ public class CPDouble extends CPEntry {
         super.write(dataOutputStream);
         dataOutputStream.writeDouble(value);
     }
+
+    @Override
+    public String toString() {
+        return Double.toString(value);
+    }
 }
