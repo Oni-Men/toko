@@ -82,4 +82,15 @@ public class StringUtils {
         }
         return string;
     }
+
+    public static String removeSuffix(String suffix, String string) {
+        if (string.endsWith(suffix)) {
+            return string.substring(0, string.length() - suffix.length());
+        }
+        return string;
+    }
+
+    public static String trim(String prefix, String suffix, String string) {
+        return removeSuffix(suffix, removePrefix(prefix, string));
+    }
 }

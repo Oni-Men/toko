@@ -1,15 +1,12 @@
 package dev.onimen.toko.command;
 
-import dev.onimen.toko.ClassFile;
-import dev.onimen.toko.Context;
-import dev.onimen.toko.FieldAccessFlag;
-import dev.onimen.toko.FieldData;
+import dev.onimen.toko.*;
 import dev.onimen.toko.constant.CPClass;
 import dev.onimen.toko.constant.CPUtf8;
+import dev.onimen.toko.MethodAccessFlag;
 import dev.onimen.toko.util.StringUtils;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -163,15 +160,44 @@ public class ShowCommand implements Command {
     }
 
     private void printMethods(ClassFile classFile, PrintWriter writer) {
+        writer.println("<< methods >>");
 
+        for (var method: classFile.methods) {
+            var accessFlags = method.accessFlags;
+            var nameEntry = (CPUtf8) classFile.getConstantPoolEntry(method.nameIndex);
+            var descriptorEntry = (CPUtf8) classFile.getConstantPoolEntry(method.descriptorIndex);
+            var modifier = this.getMethodModifierText(accessFlags);
+
+            writer.printf("\t%s %s%n", modifier, nameEntry.value);
+            writer.printf("\tdescriptor: %s%n", descriptorEntry.value);
+            writer.printf("\tflags: %s%n", accessFlags);
+
+            // TODO print method related information
+        }
     }
 
     private void printAttributes(ClassFile classFile, PrintWriter writer) {
+        writer.println("<< attributes >>");
 
+        for (var attribute : classFile.attributes) {
+            var nameEntry = (CPUtf8) classFile.getConstantPoolEntry(attribute.nameIndex);
+
+            writer.printf("\t%s: %d byte(s)%n", nameEntry.value, attribute.length);
+
+            // TODO Change print process for each attribute name
+        }
     }
 
     private String getFieldModifierText(FieldData.AccessFlags accessFlags) {
         return Arrays.asList(FieldAccessFlag.values())
+                .stream()
+                .filter(flag -> accessFlags.has(flag.mask))
+                .map(flag -> flag.keyword)
+                .collect(Collectors.joining(" "));
+    }
+
+    private String getMethodModifierText(MethodData.AccessFlags accessFlags) {
+        return Arrays.asList(MethodAccessFlag.values())
                 .stream()
                 .filter(flag -> accessFlags.has(flag.mask))
                 .map(flag -> flag.keyword)
